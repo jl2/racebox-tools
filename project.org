@@ -1,0 +1,83 @@
+* racebox-tools
+
+** About
+A Common Lisp package for using the RaceBox Mini GPS sensor.
+
+** Purpose
+This is a first step in creating a Raspberry-Pi based GPS/accelerometer/gyrscope data logger.
+
+** TODOs
+*** Replace dbus-tools with more efficient dbus equivalents
+Many functions in the current implementation repeatedly use (dbus:with-open-bus () ...)
+in the same call.  Change it to only opens the bus once and put all calls in a single open.
+
+** Example
+
+#+begin_src lisp
+  (ql:quickload :racebox-tools)
+
+  ;; Return a list of name/object pairs for each RaceBox Mini nearby.
+  (racebox-tools:list-racebox-devices)
+
+  ;; By default these all use the first RaceBox Mini in the list returned
+  ;; by (racebox-tools:list-racebox-devices), but there's an optional parameter.
+
+  ;; Disconnect first so connect won't error out.
+  (racebox-tools:disconnect)
+  (racebox-tools:connect)
+
+  ;; Read metadata UUIDs for manufacturer, serial, hardware/firmware versions.
+  (racebox-tools:read-metadata)
+
+  ;; Get a racebox-mini-data-message structure holding the raw integer values
+  ;; described in the RaceBox Mini Data Message
+  (let ((racebox-value (racebox-tools:read-current-value)))
+    (swank:inspect-in-emacs racebox-value))
+
+  (racebox-tools:disconnect)
+
+#+end_src
+
+#+RESULTS:
+
+Connect to the first seen RaceBox:
+
+#+begin_src lisp
+  (ql:quickload :racebox-tools)
+  (let ((my-racebox (first ;; First name/object pair
+                     (first  ;; Get the name
+                      (racebox-tools:list-racebox-devices)))))
+    (racebox-tools:connect :device-name my-racebox)
+    (racebox-tools:read-metadata :device-name my-racebox)
+    (let ((result (racebox-tools:read-current-value :device-name my-racebox)))
+      (swank:inspect-in-emacs result))
+    (racebox-tools:disconnect :device-name my-racebox))
+#+end_src
+
+** Requirements
+
+*** D-Bus
+*** Bluez
+*** A Bluetooth Lower Energy host
+
+
+** Shell Scripts
+
+#+begin_src shell
+  # Connect interactively to RaceBox device
+  sudo gatttool -t random -b <RaceboxAddress> -I
+  # Type this in to connect:
+  connect
+  # Type this to read data:
+  char-read-hnd f
+#+end_src
+
+
+** License
+ISC
+
+Copyright (c) 2023 Jeremiah LaRocco <jeremiah_larocco@fastmail.com>
+
+
+* Plan
+** TODO Fill in a TODO list.
