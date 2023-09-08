@@ -19,14 +19,29 @@
   (:nicknames :rbt)
 
   (:use #:cl #:alexandria #:dbus-tools)
-  (:export #:connect
+  (:export #:list-racebox-devices
+           #:is-racebox-device
+
+           #:connect
            #:disconnect
+
            #:read-metadata
+
            #:read-current-value
+
            #:read-raw-value
+
            #:decode-packet
            #:get-timestamp
-           #:is-racebox-device
-           #:list-racebox-devices
-           #:read-csv-stream
-           #:read-csb-file))
+
+
+           ;; Not yet implemented...
+           ;; #:read-csv-stream
+           ;; #:read-csv-file
+
+           ;; #:read-vbo-stream
+           ;; #:read-vbo-file
+
+           ;; #:read-gpx-stream
+           ;; #:read-gpx-file
+           ))
