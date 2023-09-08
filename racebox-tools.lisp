@@ -22,16 +22,16 @@
 
 (defun is-racebox-device (object)
   "Check if a bluetooth object is a RaceBox Mini device."
-  (and (dbt:is-bluetooth-device object)
+  (and (dbt:is-bt-device object)
        (let* ((attributes (dbt:managed-object-value object))
-              (properties (dbt:get-value attributes "org.bluez.Device1"))
-              (name (get-value properties "Name")))
+              (properties (dbt:find-value attributes "org.bluez.Device1"))
+              (name (dbt:find-value properties "Name")))
          (cl-ppcre:scan "^RaceBox Mini [0-9]+" name))))
 
 (defun list-racebox-devices ()
   "Return a list of all known RaceBox Mini devices."
   (remove-if-not #'is-racebox-device
-                 (dbt:list-bluetooth-objects)))
+                 (dbt:list-bt-objects)))
 
 (defun connect (&key (device-name (first-racebox)))
   "Connect to a RaceBox."
