@@ -1,4 +1,4 @@
-;; racebox-tools.asd
+;; main.lisp
 
 ;; Copyright (c) 2023 Jeremiah LaRocco <jeremiah_larocco@fastmail.com>
 
@@ -14,30 +14,14 @@
 ;; ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 ;; OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-(asdf:defsystem #:racebox-tools
-  :description "Describe racebox-tools here"
-  :author "Jeremiah LaRocco <jeremiah_larocco@fastmail.com>"
-  :license  "ISC"
-  :version "0.0.1"
-  :serial t
+(in-package :racebox-tools)
 
-  :depends-on (
-               #:alexandria
-               #:binary-types
-               #:cl-csv
-               #:cl-ppcre
-               #:dbus
-               #:local-time
-               #:local-time-duration
-               #:sqlite
-               #:dbus-tools
-               #:3d-vectors
-               )
 
-  :components ((:file "package")
-               (:file "dbus")
-               (:file "messages")
-               (:file "importers")
-               (:file "main"))
 
-  :in-order-to ((test-op (test-op racebox-tools.test))))
+(defun main (args)
+  (declare (ignorable args))
+  (connect)
+  (inspect (read-current-value))
+  (disconnect)
+  ;; TODO: What should main do?
+  0)

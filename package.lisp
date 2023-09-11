@@ -18,9 +18,10 @@
 
   (:nicknames :rbt)
 
-  (:use #:cl #:alexandria #:dbus-tools)
+  (:use #:cl #:alexandria #:3d-vectors #:dbus-tools)
   (:export #:list-racebox-devices
            #:is-racebox-device
+           #:first-racebox-device
 
            #:connect
            #:disconnect
@@ -32,8 +33,64 @@
            #:read-raw-value
 
            #:decode-packet
-           #:get-timestamp
 
+            #:rbm-battery-status
+
+           #:rbm-timestamp
+           #:rbm-latitude
+           #:rbm-longitude
+
+
+           #:rbm-speed
+           #:rbm-heading
+
+           #:rmb-wgs-altitude
+           #:rbm-msl-altitude
+
+           #:rbm-g-force-x
+           #:rbm-g-force-y
+           #:rbm-g-force-z
+
+           #:rbm-rotation-rate-x
+           #:rbm-rotation-rate-y
+           #:rbm-rotation-rate-z
+           
+           #:rbm-fix-status
+           #:rbm-validity
+           #:rbm-accuracy
+           #:rbm-status-flags-valid-fix
+           #:rbm-status-flags-differential-corrections-applied
+           #:rbm-status-flags-power-state
+           #:rbm-status-flags-valid-heading
+           #:rbm-status-flags-carrier-phase-range-solution
+
+           #:rbm-datetime-flags-available-confirmation-of-date-time
+           #:rbm-datetime-flags-confirmed-utc-date-validity
+           #:rbm-datetime-flags-confirmed-utc-time-validity
+
+           #:rbm-lat-lon-valid
+           #:rbm-lat-lon-correction-age
+
+           #:gps-message
+           #:timestamp
+           #:longitude
+           #:latitude
+           #:msl-altitude
+           #:wgs-altitude
+           #:speed
+           #:heading
+           #:g-force
+           #:rotation
+
+           #:gps-message-timestamp
+           #:gps-message-longitude
+           #:gps-message-latitude
+           #:gps-message-msl-altitude
+           #:gps-message-wgs-altitude
+           #:gps-message-speed
+           #:gps-message-heading
+           #:gps-message-g-force
+           #:gps-message-rotation
 
            ;; Not yet implemented...
            ;; #:read-csv-stream
