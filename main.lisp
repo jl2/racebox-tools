@@ -16,12 +16,26 @@
 
 (in-package :racebox-tools)
 
-
-
 (defun main (args)
   (declare (ignorable args))
-  (connect)
-  (inspect (read-current-value))
-  (disconnect)
-  ;; TODO: What should main do?
-  0)
+  (let ((db-name (get-database-filename)))
+            (format t "db-name: ~a~%" db-name)
+    (sqlite:with-open-database (db db-name)
+      (create-db db))
+    (unwind-protect
+         (handler-case
+             (progn
+               (connect)
+               (loop
+                 :do
+                    (sqlite:with-open-database (db db-name)
+                      (let* ((raw-value (read-current-value))
+                             (gps-value (to-gps-message raw-value)))
+                        (with-slots (raw-id) gps-value
+                          (setf raw-id (insert-message db raw-value))
+                          (insert-message db gps-value))))
+                    (sleep (/ 1 25))))
+           (error (err)
+             (format t "Received error: ~a~%Quitting GPS logger.~%~%" err)))
+      (disconnect))
+    0))

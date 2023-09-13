@@ -92,6 +92,10 @@
            #:gps-message-g-force
            #:gps-message-rotation
 
+           #:create-db
+           #:get-data-base-filename
+           #:insert-message
+           #:main
            ;; Not yet implemented...
            ;; #:read-csv-stream
            ;; #:read-csv-file

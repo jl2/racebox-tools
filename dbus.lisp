@@ -67,6 +67,7 @@
                                         "6e400003-b5a3-f393-e0a9-e50e24dcca9e"))
 
 
+
 ;; (dbus:define-dbus-object racebox-service
 ;;   (:path "/org/bluez/hci0/dev_D2_D6_A3_84_35_29/service000b/char000e"))
 ;; (dbus:define-dbus-signal-handler (racebox-service (wat))

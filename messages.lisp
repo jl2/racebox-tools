@@ -214,7 +214,8 @@
   (speed 0.0 :type real)
   (heading 0.0 :type real)
   (g-force (vec3 0.0 0.0 0.0) :type vec3)
-  (rotation (vec3 0.0 0.0 0.0) :type vec3))
+  (rotation (vec3 0.0 0.0 0.0) :type vec3)
+  (raw-id 0 :type fixnum))
 
 
 (defun to-gps-message (data-message)

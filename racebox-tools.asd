@@ -29,15 +29,18 @@
                #:dbus
                #:local-time
                #:local-time-duration
+               #:utm
                #:sqlite
                #:dbus-tools
                #:3d-vectors
+               #:uiop
                )
 
   :components ((:file "package")
                (:file "dbus")
                (:file "messages")
                (:file "importers")
+               (:file "database")
                (:file "main"))
 
   :in-order-to ((test-op (test-op racebox-tools.test))))

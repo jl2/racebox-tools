@@ -1,0 +1,23 @@
+[Unit]
+Description=RaceBox Mini Recorder
+
+After=bluetooth.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+
+# TODO: What's the best practice on choosing a user?
+User=racebox
+
+ExecStart=/usr/bin/env sbcl --non-interactive --no-userinit \
+     --eval "(let ((quicklisp-init \"$HOME/quicklisp/setup.lisp\")) \
+               (when (probe-file quicklisp-init) \
+                 (load quicklisp-init)))" \
+     --eval "(ql:quickload :racebox-tools)" \
+     --eval "(main nil)"
+
+[Install]
+WantedBy=multi-user.target
