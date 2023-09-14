@@ -10,14 +10,14 @@ Restart=always
 RestartSec=1
 
 # TODO: What's the best practice on choosing a user?
-User=racebox
+User=jeremiah
 
 ExecStart=/usr/bin/env sbcl --non-interactive --no-userinit \
-     --eval "(let ((quicklisp-init \"$HOME/quicklisp/setup.lisp\")) \
+     --eval "(let ((quicklisp-init \"/home/jeremiah/quicklisp/setup.lisp\")) \
                (when (probe-file quicklisp-init) \
                  (load quicklisp-init)))" \
      --eval "(ql:quickload :racebox-tools)" \
-     --eval "(main nil)"
+     --eval "(rbt:main nil)"
 
 [Install]
 WantedBy=multi-user.target

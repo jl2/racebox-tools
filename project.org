@@ -1,17 +1,14 @@
 * racebox-tools
 
 ** About
-A Common Lisp package for using the RaceBox Mini GPS sensor.
-
-** Purpose
-This is a first step in creating a Raspberry-Pi based GPS/accelerometer/gyrscope data logger.
+A Common Lisp package and systemd service for logging Racebox Mini sensor data.
 
 ** TODOs
 *** Replace dbus-tools with more efficient dbus equivalents
 Many functions in the current implementation repeatedly use (dbus:with-open-bus () ...)
 in the same call.  Change it to only opens the bus once and put all calls in a single open.
 
-** Example
+** REPL Examples
 
 #+begin_src lisp
   (ql:quickload :racebox-tools)
@@ -54,6 +51,36 @@ Connect to the first seen RaceBox:
     (racebox-tools:disconnect :device-name my-racebox))
 #+end_src
 
+** Running as a Service
+Make sure [[~/src/lisp/]] is in [[~/.config/common-lisp/source-registry.conf.d/projects.conf]]
+with this code:
+
+#+begin_src lisp
+  (:tree (:home "src/lisp/"))
+#+end_src
+
+
+Clone racebox-tools and dbus-tools into [[~/src/lisp/]]
+
+#+begin_src shell
+    mkdir -p $HOME/src/lisp/
+    cd $HOME/src/lisp/
+    git clone git@github.com:jl2/racebox-tools.git
+    git clone git@github.com:jl2/dbus-tools.git
+#+end_src
+
+Edit [[./racebox-recorder.service::13]] and replace 'jeremiah' with your username.
+
+#+begin_src shell
+
+  sudo cp racebox-tools/racebox-recorder.service /etc/systemd/services/
+  systemctl start racebox-recorder
+
+#+end_src
+
+After a second the RaceBox LED should shine blue and a new .db file should show up
+in [[~/src/lisp/racebox-tools/databases]].
+
 ** Requirements
 
 *** D-Bus
@@ -81,3 +108,4 @@ Copyright (c) 2023 Jeremiah LaRocco <jeremiah_larocco@fastmail.com>
 
 * Plan
 ** TODO Fill in a TODO list.
+
