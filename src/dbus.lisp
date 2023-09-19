@@ -49,7 +49,7 @@
                             "org.bluez.Device1"
                             "Disconnect"))
 
-(defun read-metadata (&key (device-name (dbt:managed-object-name (first (list-racebox-devices)))))
+(defun read-metadata (&key (device-name (first-racebox-device)))
   "Return the type, serial number, firmware version, hardware version, and manufacturer."
   (loop :for key :in '(:type :serial :firmware-version :hardware-version :manufacturer)
         :for uuid :in '("00002a24-0000-1000-8000-00805f9b34fb"
@@ -61,7 +61,7 @@
                           (dbt:to-string
                            (dbt:read-gatt-characteristic-by-uuid device-name
                                                                  uuid)))))
-(defun read-raw-value (&key (device-name (dbt:managed-object-name (first (list-racebox-devices)))))
+(defun read-raw-value (&key (device-name (first-racebox-device)))
   "Read an octet buffer containing the most recent reading from specified device."
   (dbt:read-gatt-characteristic-by-uuid device-name
                                         "6e400003-b5a3-f393-e0a9-e50e24dcca9e"))
