@@ -254,7 +254,7 @@
 
 (defun compute-checksum (packet)
   "Compute the checksum used by ubx messages."
-  (declare (optimize (speed 3) (safety 3) (debug 3) (space 3))
+  (declare (optimize (speed 3) (safety 0) (debug 0) (space 3))
            (type (simple-array (unsigned-byte 8)) packet))
   (loop
     :for ck-a fixnum = 0 :then (mod (+ ck-a (aref packet i))
@@ -286,7 +286,7 @@
   "Decode raw octet buffer from the gatt characteristic into a
 (values racebox-mini-data-message ubx-header check1 check2 octet-buffer)"
 
-  (declare (optimize (speed 0) (safety 3) (debug 3) (space 3))
+  (declare (optimize (speed 3) (safety 0) (debug 0) (space 3))
            (type (simple-array (unsigned-byte 8)) raw-data))
 
   (when (zerop (length raw-data))
