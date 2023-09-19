@@ -36,11 +36,14 @@
                #:uiop
                )
 
-  :components ((:file "package")
-               (:file "dbus")
-               (:file "messages")
-               (:file "importers")
-               (:file "database")
-               (:file "main"))
+  :components ((:module "src"
+                        :components
+                        ((:file "package")
+                         (:file "dbus")
+                         (:file "dbus-object")
+                         (:file "messages")
+                         (:file "importers")
+                         (:file "database")
+                         (:file "main"))))
 
   :in-order-to ((test-op (test-op racebox-tools.test))))

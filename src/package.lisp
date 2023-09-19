@@ -96,6 +96,9 @@
            #:get-data-base-filename
            #:insert-message
            #:main
+
+           #:*database-directory*
+           #:db-to-gpx
            ;; Not yet implemented...
            ;; #:read-csv-stream
            ;; #:read-csv-file

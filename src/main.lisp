@@ -19,7 +19,7 @@
 (defun main (args)
   (declare (ignorable args))
   (let ((db-name (get-database-filename)))
-            (format t "db-name: ~a~%" db-name)
+    (format t "db-name: ~a~%" db-name)
     (sqlite:with-open-database (db db-name)
       (create-db db))
     (unwind-protect

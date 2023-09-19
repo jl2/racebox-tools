@@ -16,6 +16,11 @@
 
 (in-package :racebox-tools)
 
+(defparameter *database-directory*
+  (asdf:system-relative-pathname :racebox-tools
+                                 "databases/")
+  "Directory where Sqlite database files will be saved.")
+
 (defun create-db (db)
   (loop :for sql-file :in (uiop:directory-files (asdf:system-relative-pathname :racebox-tools "sql/")
                                                 "create_table*.sql")
@@ -225,5 +230,6 @@
 
 (defun get-database-filename ()
   "Return a database filename with a timestamp."
-  (asdf:system-relative-pathname :racebox-tools
-                                 (format nil "databases/racebox-~a.db" (local-time:now))))
+  (make-pathname :defaults *database-directory*
+                 :name (format nil "databases/racebox-~a" (local-time:now))
+                 :type "db"))
