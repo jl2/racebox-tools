@@ -33,8 +33,9 @@
            #:read-raw-value
 
            #:decode-packet
+           #:to-gps-message
 
-            #:rbm-battery-status
+           #:rbm-battery-status
 
            #:rbm-timestamp
            #:rbm-latitude

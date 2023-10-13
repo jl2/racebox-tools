@@ -17,12 +17,12 @@
 (in-package :racebox-tools)
 
 (defun publish-example ()
-(handler-case
-    (dbus:with-open-bus (bus (dbus:session-server-addresses))
-      (format t "Bus connection name: ~A~%" (dbus:bus-name bus))
-      (dbus:publish-objects bus))
-  (end-of-file ()
-    :disconnected-by-bus)))
+  (handler-case
+      (dbus:with-open-bus (bus (dbus:session-server-addresses))
+        (format t "Bus connection name: ~A~%" (dbus:bus-name bus))
+        (dbus:publish-objects bus))
+    (end-of-file ()
+      :disconnected-by-bus)))
 
 (dbus:define-dbus-object racebox-service
   (:path "/"))
@@ -73,5 +73,6 @@
   (:interface "org.jl2.RaceBoxRecorder")
   (format t "Got signal with arg ~S~%" s))
 
-(defparameter *mt* (bt:make-thread #'publish-example))
+;; (defparameter *mt* (bt:make-thread #'publish-example))
+
 ;; (dbt:inspect-introspected-object :system "org.jl2.RaceboxRecorder" "/org/jl2/RaceboxRecorder")

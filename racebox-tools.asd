@@ -43,6 +43,7 @@
                          (:file "dbus-object")
                          (:file "messages")
                          (:file "importers")
+                         (:file "exporters")
                          (:file "database")
                          (:file "main"))))
 

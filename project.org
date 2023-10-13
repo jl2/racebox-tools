@@ -11,6 +11,7 @@ in the same call.  Change it to only opens the bus once and put all calls in a s
 ** REPL Examples
 
 #+begin_src lisp
+
   (ql:quickload :racebox-tools)
 
   ;; Return a list of name/object pairs for each RaceBox Mini nearby.
@@ -49,6 +50,16 @@ Connect to the first seen RaceBox:
     (let ((result (racebox-tools:read-current-value :device-name my-racebox)))
       (swank:inspect-in-emacs result))
     (racebox-tools:disconnect :device-name my-racebox))
+#+end_src
+
+Convert a SQLite database track into a GPX file.
+
+#+begin_src lisp
+  (ql:quickload :racebox-tools)
+
+  (let ((db-name "/home/jeremiah/moto_rides/sept_17/racebox-2023-09-17T18:26:37.302257Z.db")
+        (gpx-name "/home/jeremiah/moto_rides/sept_17/gpx1.gpx"))
+    (rbt:db-to-gpx db-name gpx-name))
 #+end_src
 
 ** Running as a Service
