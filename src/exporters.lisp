@@ -26,7 +26,6 @@
             yr     mon    day    hr     min    sec)))
 
 (defun db-to-gpx (db-filename gpx-filename)
-  (declare (ignorable gpx-filename))
   (sqlite:with-open-database (db db-filename)
     (alexandria:with-output-to-file (stream gpx-filename)
       (format stream
@@ -37,17 +36,17 @@
      xmlns=\"http://www.topografix.com/GPX/1/0\"
      xsi:schemaLocation=\"http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd\">~%")
 
-      (format stream "  <time>~a</time>~%" (sqlite:execute-single
-                     db
-                     "select timestamp from gps_message order by timestamp limit 1"))
+      (format stream "  <time>~a</time>~%" (sqlite:execute-single db
+                                                                  "select timestamp from gps_message order by timestamp limit 1"))
       (format stream "  <trk>~%")
       (format stream "    <name>~a</name>~%" db-filename)
       (format stream "    <trkseg>~%")
 
       (loop
-        :with statement = (sqlite:prepare-statement
-                     db
-                     "select latitude, longitude, wgs_altitude, timestamp from gps_message order by timestamp")
+        :with statement = (sqlite:prepare-statement db
+                                                    "select latitude, longitude, wgs_altitude, timestamp
+                                                       from gps_message
+                                                      order by timestamp")
 
         :while (sqlite:step-statement statement)
         :do
