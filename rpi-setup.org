@@ -1,63 +1,79 @@
 * Notes about RPi setup for racebox-tools logger
 
+* RPi Setup
+
+[[https://raspi.debian.net/daily-images/][See here]] for Debian RPi images.
+
+#+begin_src shell
+  export RPI_DRIVE=/dev/sdc
+  curl https://gemmei.ftp.acc.umu.se/cdimage/unofficial/raspi//daily/raspi_4_trixie.img.xz -o rpi_deb.img.xz
+  time xzcat rpi_dev.img.xz| sudo dd oflag=direct,dsync bs=64k of=$RPI_DRIVE
+#+end_src
+
+#+RESULTS:
+
 #+begin_src shell
   # Install some pre-reqs
-  sudo apt-get install -y make \
-       git \
-       sbcl \
-       zsh \
-       tmux \
-       gcc-13 \
-       libgccjit-13-dev \
-       m4 \
-       autoconf \
-       texinfo \
-       zlib1g-dev \
-       libgnutls28-dev \
-       libjansson-dev \
-       libncurses-dev \
-       pkg-config \
-       raspi-firmware
+    sudo apt-get install -y make \
+         git \
+         sbcl \
+         zsh \
+         tmux \
+         gcc-13 \
+         libgccjit-13-dev \
+         m4 \
+         autoconf \
+         texinfo \
+         zlib1g-dev \
+         libgnutls28-dev \
+         libjansson-dev \
+         libncurses-dev \
+         pkg-config \
+         raspi-firmware
 
-  # Add my user
-  sudo useradd jeremiah
-  sudo usermod -s /usr/bin/zsh jeremiah
+    # Add my user
+    sudo useradd jeremiah
+    sudo usermod -s /usr/bin/zsh jeremiah
 
-  # Clone SBCL and Emacs
-  mkdir -p $HOME/oss_src
-  cd $HOME/oss_src
-  git clone git://git.code.sf.net/p/sbcl/sbcl
-  git clone git://git.savannah.gnu.org/emacs.git
+    # Clone SBCL and Emacs
+    mkdir -p $HOME/oss_src
+    cd $HOME/oss_src
+    git clone git://git.code.sf.net/p/sbcl/sbcl
+    git clone git://git.savannah.gnu.org/emacs.git
 
-  # Initial build of SBCL
-  cd $HOME/oss_src/sbcl
-  sh make.sh --dynamic-space-size=$SBCL_SPACE
-  sudo apt-get remove sbcl
-  sudo sh install.sh
+    # Initial build of SBCL
+    cd $HOME/oss_src/sbcl
+    sh make.sh --dynamic-space-size=$SBCL_SPACE
+    sudo apt-get remove sbcl
+    sudo sh install.sh
 
-  # Initial build of Emacs
-  cd $HOME/oss_src/emacs
-  sudo make distclean
-  git clean -xdf
-  ./autogen.sh
-  ./configure --with-native-compilation \
-              --with-libsystemd \
-              --with-json \
-              --with-cairo \
-              --with-zlib \
-              --with-threads \
-              --with-modules \
-              --with-zlib \
-              --with-gnutls
-  make -j4
-  sudo make install
+    # Initial build of Emacs
+    cd $HOME/oss_src/emacs
+    sudo make distclean
+    git clean -xdf
+    ./autogen.sh
+    ./configure --with-native-compilation \
+                --with-libsystemd \
+                --with-json \
+                --with-cairo \
+                --with-zlib \
+                --with-threads \
+                --with-modules \
+                --with-zlib \
+                --with-gnutls
+    make -j5
+    sudo make install
 
 
-  # Clone racebox-tools and dbus-tools
-  mkdir -p $HOME/src/lisp/
-  cd $HOME/src/lisp
-  git clone git@github.com:jl2/racebox-tools.git
-  git clone git@github.com:jl2/dbus-tools.git
+    # Clone racebox-tools and dbus-tools
+    mkdir -p $HOME/src/lisp/
+    mkdir -p $HOME/.config/common-lisp/source-registry.conf.d/
 
-  # Setup the
+    cd $HOME/src/lisp
+    git clone git@github.com:jl2/racebox-tools.git
+    git clone git@github.com:jl2/dbus-tools.git
+    sudo cp $HOME/src/lisp/racebox-tools/systemd.config/racebox-recorder.service \
+         /etc/systemd/system/racebox-recorder.service
+    sudo systemctl start racebox-recorder
+    # Setup the
 #+end_src

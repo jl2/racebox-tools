@@ -1,4 +1,5 @@
 .api-key
+manifest.txt
 *.fasl
 *.*fsl
 *.abcl

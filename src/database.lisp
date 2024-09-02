@@ -17,8 +17,7 @@
 (in-package :racebox-tools)
 
 (defparameter *database-directory*
-  (asdf:system-relative-pathname :racebox-tools
-                                 "databases/")
+  (asdf:system-relative-pathname :racebox-tools "")
   "Directory where Sqlite database files will be saved.")
 
 (defun create-db (db)
