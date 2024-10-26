@@ -63,19 +63,19 @@ Convert a SQLite database track into a GPX file.
 #+end_src
 
 ** Running as a Service
-Make sure [[~/src/lisp/]] is in [[~/.config/common-lisp/source-registry.conf.d/projects.conf]]
+Make sure [[~/lisp/]] is in [[~/.config/common-lisp/source-registry.conf.d/projects.conf]]
 with this code:
 
 #+begin_src lisp
-  (:tree (:home "src/lisp/"))
+  (:tree (:home "lisp/"))
 #+end_src
 
 
-Clone racebox-tools and dbus-tools into [[~/src/lisp/]]
+Clone racebox-tools and dbus-tools into [[~/lisp/]]
 
 #+begin_src shell
-    mkdir -p $HOME/src/lisp/
-    cd $HOME/src/lisp/
+    mkdir -p $HOME/lisp/
+    cd $HOME/lisp/
     git clone git@github.com:jl2/racebox-tools.git
     git clone git@github.com:jl2/dbus-tools.git
 #+end_src
@@ -90,7 +90,7 @@ Edit [[./racebox-recorder.service::13]] and replace 'jeremiah' with your usernam
 #+end_src
 
 After a second the RaceBox LED should shine blue and a new .db file should show up
-in [[~/src/lisp/racebox-tools/databases]].
+in [[~/lisp/racebox-tools/databases]].
 
 ** Requirements
 

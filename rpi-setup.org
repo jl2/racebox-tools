@@ -1,40 +1,59 @@
 * Notes about RPi setup for racebox-tools logger
 
-* RPi Setup
+* Raspberry Pi Setup
 
+This is a description of how I setup my Raspberry Pi for running the Racebox tools data logger.
+These instructions were accurate when I originally put Debian on my Pi, and should still be
+generally correct.  If any mistakes are found please submit a PR!  I probably will not have
+a reason to re-do this procedure until I have to re-install for some reason, or get a new Pi.
+
+It isn't required to build Emacs and SBCL from source to use the Racebox-tools package or the
+data logging service, but I prefer to do so to control how the compilation is done and which
+libraries are configured.
+
+
+* Debian
 [[https://raspi.debian.net/daily-images/][See here]] for Debian RPi images.
 
 #+begin_src shell
-  export RPI_DRIVE=/dev/sdc
+  export RPI_DRIVE=<use something appropriate here>
   curl https://gemmei.ftp.acc.umu.se/cdimage/unofficial/raspi//daily/raspi_4_trixie.img.xz -o rpi_deb.img.xz
   time xzcat rpi_dev.img.xz| sudo dd oflag=direct,dsync bs=64k of=$RPI_DRIVE
 #+end_src
 
 #+RESULTS:
 
+* Debian Setup
+This script will install SBCL and Emacs pre-requisites and create a user.
+
 #+begin_src shell
   # Install some pre-reqs
-    sudo apt-get install -y make \
-         git \
-         sbcl \
-         zsh \
-         tmux \
-         gcc-13 \
-         libgccjit-13-dev \
-         m4 \
-         autoconf \
-         texinfo \
-         zlib1g-dev \
-         libgnutls28-dev \
-         libjansson-dev \
-         libncurses-dev \
-         pkg-config \
-         raspi-firmware
+  sudo apt-get install -y make \
+       git \
+       sbcl \
+       zsh \
+       tmux \
+       gcc-13 \
+       libgccjit-13-dev \
+       m4 \
+       autoconf \
+       texinfo \
+       zlib1g-dev \
+       libgnutls28-dev \
+       libjansson-dev \
+       libncurses-dev \
+       pkg-config \
+       raspi-firmware
 
     # Add my user
     sudo useradd jeremiah
     sudo usermod -s /usr/bin/zsh jeremiah
+#+end_src
+ 
+This script will clone SBCL and Emacs and build them both.  Next it installs Quicklisp and clones
+the racebox-tools and dbus-tools projects.
 
+#+begin_src
     # Clone SBCL and Emacs
     mkdir -p $HOME/oss_src
     cd $HOME/oss_src
@@ -64,12 +83,15 @@
     make -j5
     sudo make install
 
-
     # Clone racebox-tools and dbus-tools
-    mkdir -p $HOME/src/lisp/
+    mkdir -p $HOME/lisp/
     mkdir -p $HOME/.config/common-lisp/source-registry.conf.d/
 
-    cd $HOME/src/lisp
+    cd $HOME/lisp/
+    curl https://beta.quicklisp.org/quicklisp.lisp -o quicklisp.lisp
+    sbcl --non-interactive --eval "(load \"quicklisp.lisp\")" --eval "(quicklisp-quickstart:install)" --eval "(quit)
+
+    cd $HOME/lisp
     git clone git@github.com:jl2/racebox-tools.git
     git clone git@github.com:jl2/dbus-tools.git
     sudo cp $HOME/src/lisp/racebox-tools/systemd.config/racebox-recorder.service \
