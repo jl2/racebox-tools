@@ -1,0 +1,13 @@
+;; -*- mode: Lisp; fill-column: 75; comment-column: 50; -*-
+
+;; Common Common Lisp system initialization.
+;; Call this file from .sbclrc, .ccl-init.lisp, .abclrc, .clisprc.lisp.
+
+;;(declaim (optimize (speed 3) (safety 1) (debug 1)))
+
+;;(setf *read-default-float-format* 'double-float)
+
+#-quicklisp
+(let ((quicklisp-init "/home/jeremiah/quicklisp/setup.lisp"))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
