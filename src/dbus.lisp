@@ -22,7 +22,7 @@
 
 (defun is-racebox-device (object)
   "Check if a bluetooth object is a RaceBox Mini device."
-  (and (dbt:is-bt-device object)
+  (and (bluetooth:device-p object)
        (let* ((attributes (dbt:managed-object-value object))
               (properties (dbt:find-value attributes "org.bluez.Device1"))
               (name (dbt:find-value properties "Name")))
@@ -31,7 +31,7 @@
 (defun list-racebox-devices ()
   "Return a list of all known RaceBox Mini devices."
   (remove-if-not #'is-racebox-device
-                 (dbt:list-bt-objects)))
+                 (bluetooth:list-objects)))
 
 (defun connect (&key (device-name (first-racebox-device)))
   "Connect to a RaceBox."
@@ -49,6 +49,14 @@
                             "org.bluez.Device1"
                             "Disconnect"))
 
+(defun to-string (buffer)
+  "Convert an octet buffer into a string."
+  (declare (type vector buffer))
+  ;; Chop the trailing 0 bytes
+  (babel:octets-to-string (subseq buffer
+                                  0 (search #(0)
+                                            buffer))))
+
 (defun read-metadata (&key (device-name (first-racebox-device)))
   "Return the type, serial number, firmware version, hardware version, and manufacturer."
   (loop :for key :in '(:type :serial :firmware-version :hardware-version :manufacturer)
@@ -58,12 +66,12 @@
                         "00002a27-0000-1000-8000-00805f9b34fb"
                         "00002a29-0000-1000-8000-00805f9b34fb")
         :collecting (cons key
-                          (dbt:to-string
-                           (dbt:read-gatt-characteristic-by-uuid device-name
-                                                                 uuid)))))
+                          (to-string
+                           (bluetooth:read-gatt-characteristic-by-uuid device-name
+                                                                       uuid)))))
 (defun read-raw-value (&key (device-name (first-racebox-device)))
   "Read an octet buffer containing the most recent reading from specified device."
-  (dbt:read-gatt-characteristic-by-uuid device-name
+  (bluetooth:read-gatt-characteristic-by-uuid device-name
                                         "6e400003-b5a3-f393-e0a9-e50e24dcca9e"))
 
 

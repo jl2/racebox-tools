@@ -23,6 +23,7 @@
 
   :depends-on (
                #:alexandria
+               #:babel
                #:binary-types
                #:cl-csv
                #:cl-ppcre
@@ -32,6 +33,7 @@
                #:utm
                #:sqlite
                #:dbus-tools
+               #:bluetooth-tools
                #:3d-vectors
                #:uiop
                )
